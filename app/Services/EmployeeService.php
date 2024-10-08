@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class EmployeeService
 {
-    public function checkAvailability($startTime, $endTime)
+    public function getEmployeeTimeBlocks($startTime, $endTime)
     {
         $startTimeUTC = Carbon::parse($startTime)->setTimezone('UTC');
         $endTimeUTC = Carbon::parse($endTime)->setTimezone('UTC');
@@ -43,5 +43,14 @@ class EmployeeService
                 'reserved_blocks' => $reservedBlocksLocal,
             ];
         });
+    }
+
+    public function checkAvailability($dateTime)
+    {
+        $date = Carbon::parse($dateTime)->setTimezone('UTC');
+
+        $employee = new Employee();
+
+        return $employee->scopeAvailableAt($date);
     }
 }

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('restrict');
-            $table->string('name');
             $table->string('phone_number')->nullable();
             $table->string('address')->nullable();
             $table->timestamps();

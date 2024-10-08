@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CheckEmployeeAvailabilityRequest;
+use App\Http\Requests\GetEmployeeTimeBlocksRequest;
 use App\Services\EmployeeService;
 
 class EmployeeController extends Controller
@@ -13,12 +14,20 @@ class EmployeeController extends Controller
     {
         $this->employeeService = $employeeService;
     }
-    public function checkAvailability(CheckEmployeeAvailabilityRequest $request)
+    public function getEmployeeTimeBlocks(GetEmployeeTimeBlocksRequest $request)
     {
-        $employees = $this->employeeService->checkAvailability(
+        $employees = $this->employeeService->getEmployeeTimeBlocks(
             $request->input('start_time'),
             $request->input('end_time'),
-            $request->input('timezone')
+        );
+
+        return response()->json($employees);
+    }
+
+    public function checkEmployeeAvailability(CheckEmployeeAvailabilityRequest $request)
+    {
+        $employees = $this->employeeService->checkAvailability(
+            $request->input('date_time'),
         );
 
         return response()->json($employees);

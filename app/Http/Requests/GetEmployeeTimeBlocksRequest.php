@@ -5,8 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
-
-class CheckEmployeeAvailabilityRequest extends FormRequest
+class GetEmployeeTimeBlocksRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +23,8 @@ class CheckEmployeeAvailabilityRequest extends FormRequest
     public function rules()
     {
         return [
-            'date_time' => 'required|date_format:H:i:s Y-m-d',
+            'start_time' => 'required|date_format:H:i:s Y-m-d',
+            'end_time' => 'required|date_format:H:i:s Y-m-d|after:start_time',
         ];
     }
 

@@ -17,6 +17,7 @@ class EmployeeFactory extends Factory
     public function definition(): array
     {
         return [
+            'lastname' => fake()->lastName(),
             'specialty' => $this->faker->randomElement([
                 'Cardiology',
                 'Dermatology',

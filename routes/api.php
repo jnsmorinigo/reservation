@@ -6,6 +6,8 @@ use App\Http\Controllers\EmployeeController;
 
 
 Route::post('/login', [ApiAuthController::class, 'login']);
-Route::post('/logout', [ApiAuthController::class, 'logout'])->middleware('auth:sanctum');
-
-Route::get('/employees/availability', [EmployeeController::class, 'checkAvailability']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [ApiAuthController::class, 'logout']);
+    Route::get('/employees/time-blocks', [EmployeeController::class, 'getEmployeeTimeBlocks']);
+    Route::get('/employees/check-availability', [EmployeeController::class, 'checkEmployeeAvailability']);
+});

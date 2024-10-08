@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('restrict');
+            $table->string('lastname');
             $table->string('specialty')->nullable();
             $table->string('timezone')->nullable();
             $table->string('country')->nullable();
