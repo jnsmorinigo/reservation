@@ -15,11 +15,11 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        //Create user Admin
         User::create([
             'name' => env('DEFAULT_USER'),
             'email' =>env('DEFAULT_EMAIL'),
             'password' => Hash::make(env('DEFAULT_PASS')),
-
         ]);
     }
 }
