@@ -10,4 +10,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [ApiAuthController::class, 'logout']);
     Route::get('/employees/time-blocks', [EmployeeController::class, 'getEmployeeTimeBlocks']);
     Route::get('/employees/check-availability', [EmployeeController::class, 'checkEmployeeAvailability']);
+    Route::post('/employees/{id}/schedule-email', [EmployeeController::class, 'sendScheduleEmail']);
 });

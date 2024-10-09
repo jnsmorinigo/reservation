@@ -15,7 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             '/login',
             '/api/employees/time-blocks',
-            '/api/employees/check-availability'
+            '/api/employees/check-availability',
+            '/employees/{id}/schedule-email'
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
