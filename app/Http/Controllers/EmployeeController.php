@@ -24,6 +24,11 @@ class EmployeeController extends Controller
     {
         $this->employeeService = $employeeService;
     }
+
+    public function index()
+    {
+        return view('employees.index');
+    }
     public function getEmployeeTimeBlocks(GetEmployeeTimeBlocksRequest $request)
     {
         $employees = $this->employeeService->getEmployeeTimeBlocks(
