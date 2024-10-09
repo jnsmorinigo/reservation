@@ -16,8 +16,14 @@ class ListHoursExport implements FromCollection, WithHeadings
 
     public function __construct($startDate = null, $endDate = null, $type = null)
     {
-        $this->startDate = $startDate ? Carbon::parse($startDate) : null;
-        $this->endDate = $endDate ? Carbon::parse($endDate) : null;
+        $this->startDate = $startDate
+            ? Carbon::createFromFormat('H:i:s Y-m-d', $startDate, config('app.timezone'))->setTimezone('UTC')
+            : null;
+
+        // Convertir la fecha de fin a UTC
+        $this->endDate = $endDate
+            ? Carbon::createFromFormat('H:i:s Y-m-d', $endDate, config('app.timezone'))->setTimezone('UTC')
+            : null;
         $this->type = $type;
     }
 
@@ -50,8 +56,8 @@ class ListHoursExport implements FromCollection, WithHeadings
                     'name' => $employee->user->name,
                     'lastname' => $employee->lastname,
                     'work_date' => $block->work_date,
-                    'start_time' => $block->start_time,
-                    'end_time' => $block->end_time,
+                    'start_time' => Carbon::parse($block->start_time, 'UTC')->setTimezone('America/New_York')->toTimeString(),
+                    'end_time' => Carbon::parse($block->end_time, 'UTC')->setTimezone('America/New_York')->toTimeString(),
                     'status' => $block->is_reserved ? 'Reserved' : 'Available',
                 ];
             }
@@ -68,7 +74,7 @@ class ListHoursExport implements FromCollection, WithHeadings
             'Work Date',
             'Start Time',
             'End Time',
-            'Status', // Available or Reserved
+            'Status',
         ];
     }
 }

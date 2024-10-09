@@ -14,8 +14,14 @@ class EmployeesStatus implements FromCollection, WithHeadings
 
     public function __construct($startDate = null, $endDate = null)
     {
-        $this->startDate = $startDate ? Carbon::parse($startDate) : null;
-        $this->endDate = $endDate ? Carbon::parse($endDate) : null;
+        $this->startDate = $startDate
+            ? Carbon::createFromFormat('H:i:s Y-m-d', $startDate, config('app.timezone'))->setTimezone('UTC')
+            : null;
+
+        // Convertir la fecha de fin a UTC
+        $this->endDate = $endDate
+            ? Carbon::createFromFormat('H:i:s Y-m-d', $endDate, config('app.timezone'))->setTimezone('UTC')
+            : null;
     }
 
     public function collection()
@@ -28,7 +34,7 @@ class EmployeesStatus implements FromCollection, WithHeadings
                 }
                 if ($this->endDate) {
                     $query->where('work_date', '<=', $this->endDate->toDateString())
-                        ->whereTime('end_time', '<=', $this->endDate->toTimeString()); // Cambiado a 'end_time'
+                        ->whereTime('end_time', '<=', $this->endDate->toTimeString());
                 }
             }]);
 

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,6 +17,8 @@ class EmployeeFactory extends Factory
      */
     public function definition(): array
     {
+        $lunchBreakStartNY = Carbon::createFromTime(12, 0, 0, config('app.timezone'));
+        $lunchBreakEndNY = $lunchBreakStartNY->copy()->addHour();
         return [
             'lastname' => fake()->lastName(),
             'specialty' => $this->faker->randomElement([
@@ -28,8 +31,8 @@ class EmployeeFactory extends Factory
             ]),
             'timezone' => $this->faker->timezone(),
             'country' => $this->faker->country(),
-            'lunch_break_start' => '12:00',
-            'lunch_break_end' => '13:00',
+            'lunch_break_start' => $lunchBreakStartNY->setTimezone('UTC')->toTimeString(),
+            'lunch_break_end' => $lunchBreakEndNY->setTimezone('UTC')->toTimeString(),
             'block_duration' => 60,
         ];
     }

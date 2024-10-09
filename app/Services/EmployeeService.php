@@ -10,8 +10,11 @@ class EmployeeService
 {
     public function getEmployeeTimeBlocks($startTime, $endTime)
     {
-        $startTimeUTC = Carbon::parse($startTime)->setTimezone('UTC');
-        $endTimeUTC = Carbon::parse($endTime)->setTimezone('UTC');
+        $startTimeFormatted = Carbon::createFromFormat('H:i:s Y-m-d', $startTime)->format('Y-m-d H:i:s');
+        $endTimeFormatted = Carbon::createFromFormat('H:i:s Y-m-d', $endTime)->format('Y-m-d H:i:s');
+
+        $startTimeUTC = Carbon::createFromFormat('Y-m-d H:i:s', $startTimeFormatted, config('app.timezone'))->setTimezone('UTC');
+        $endTimeUTC = Carbon::createFromFormat('Y-m-d H:i:s', $endTimeFormatted, config('app.timezone'))->setTimezone('UTC');
 
         $employees = Employee::with(['employeeTimeBlocks' => function ($query) use ($startTimeUTC, $endTimeUTC) {
             $query->whereBetween('start_time', [$startTimeUTC->toTimeString(), $endTimeUTC->toTimeString()]);
@@ -47,10 +50,10 @@ class EmployeeService
 
     public function checkAvailability($dateTime)
     {
-        $date = Carbon::parse($dateTime)->setTimezone('UTC');
+        $dateUTC = Carbon::createFromFormat('H:i:s Y-m-d', $dateTime, config('app.timezone'))->setTimezone('UTC');
 
         $employee = new Employee();
 
-        return $employee->scopeAvailableAt($date);
+        return $employee->scopeAvailableAt($dateUTC);
     }
 }

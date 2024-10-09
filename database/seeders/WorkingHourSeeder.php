@@ -24,7 +24,14 @@ class WorkingHourSeeder extends Seeder
         ]);
 
         foreach ($workingHours as $workingHourData) {
-            WorkingHour::create($workingHourData);
+            $startTimeNY = Carbon::createFromFormat('H:i', $workingHourData['start_time'],config('app.timezone'))->setTimezone('UTC');
+            $endTimeNY = Carbon::createFromFormat('H:i', $workingHourData['end_time'], config('app.timezone'))->setTimezone('UTC');
+
+            WorkingHour::create([
+                'day_of_week' => $workingHourData['day_of_week'],
+                'start_time' => $startTimeNY->toTimeString(),
+                'end_time' => $endTimeNY->toTimeString(),
+            ]);
         }
     }
 }
